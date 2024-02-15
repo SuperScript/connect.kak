@@ -31,7 +31,7 @@ provide-module connect %{
       # Iterate paths
       paths=''
       for path do
-        paths=$paths:$path
+        paths=${paths:+${paths}:}$path
       done
 
       # Update the option
@@ -63,7 +63,7 @@ provide-module connect %{
     connect detach %arg{@}
   }
 
-  define-command connect -params 1.. -command-completion -docstring 'Run the given command as <command> sh -c {connect} -- [arguments].  Example: connect terminal sh' %{
+  define-command connect -params 1.. -command-completion -docstring 'Run the given command as <command> sh -c {connect} connect.kak [arguments].  Example: connect terminal sh' %{
     %arg{1} sh -c %{
       kak_opt_prelude_path=$1
       kak_opt_connect_root_path=$2
@@ -85,7 +85,7 @@ provide-module connect %{
       cd "$kak_server_working_directory"
 
       [ "$1" ] && "$@" || "$SHELL"
-    } -- \
+    } connect.kak \
       %opt{prelude_path} \
       %opt{connect_root_path} \
       %opt{connect_environment} \
